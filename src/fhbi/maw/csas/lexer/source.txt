@@ -1,0 +1,30 @@
+class X extends List implements Cloneable {
+	/**
+	 * JavaDoc-Kommentar
+	 * 
+	 * @author Christian Stührmann
+	 * @author Alexander Sundermann
+	 */
+	 public void myMethod(String s) {}
+	
+	// Einzeiliger Kommentar
+	private void myMethod2(String s) {
+		int a = 17;
+	}
+	
+	/*
+	 * Mehrzeiliger Kommentar
+	 */
+	private void myMethod2(String s) {
+		char b = 'bla';
+	}
+	
+	@Test-Annotation
+	protected void Test-Method () {
+		String s = "Hallo, Winter";
+	}
+}
+
+interface Y {
+	public void doSomethingWith(int a);
+}
