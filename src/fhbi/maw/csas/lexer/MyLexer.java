@@ -131,4 +131,16 @@ public class MyLexer {
 
 		return regexToCheck_List;
 	}
+	
+	/**
+	 * Diese Methode erzeugt ein HTML-Gerüst mit "HTML und BODY" Teil der HTML -
+	 * Standarts. Dieser String kann in einem HTML Viewer angezeigt werden.
+	 */
+	public String getHtmlSource() {
+		String str = "";
+		for (Regex regex : foundRegex_List)
+			str = str + regex.getHTMLTag();
+
+		return str;
+	}
 }
