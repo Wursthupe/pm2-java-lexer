@@ -27,4 +27,8 @@ public class TEndLine extends Regex {
 		super(name, regexString, htmlColor, htmlArt);
 	}
 
+	@Override
+	public String getHTMLTag() {
+		return "<br>";
+	}
 }
