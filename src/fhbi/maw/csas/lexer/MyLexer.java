@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
+import fhbi.maw.csas.lexer.logging.LoggerConsole;
+import fhbi.maw.csas.lexer.logging.LoggerFile;
 import fhbi.maw.csas.lexer.tokens.TAnnotationen;
 import fhbi.maw.csas.lexer.tokens.TChar;
 import fhbi.maw.csas.lexer.tokens.TCommentMore;
@@ -30,6 +33,9 @@ public class MyLexer {
 	private BufferedReader _source;
 	private ArrayList<Regex> foundRegex_List;
 	private String sourceString;
+	
+	private LoggerConsole loggerConsole;
+	private LoggerFile loggerFile;
 
 	/**
 	 * Dies ist der Konstruktor der MyLexer - Klasse. Beim initalisieren muss
@@ -46,11 +52,26 @@ public class MyLexer {
 	 *                Diese Exeption wird geworfen, wenn der Pfad nicht passt
 	 *                bzw. Die Quelltext Datei nicht existiert.
 	 */
-	public MyLexer(String source) throws FileNotFoundException {
+	public MyLexer(String source, boolean loggerState)
+			throws FileNotFoundException {
+		if (loggerState) {
+			// Der Konsolen Logger wird erzeugt
+			loggerConsole = new LoggerConsole(MyLexer.class.getName(),
+					Level.ALL);
+
+			// Der File Logger wird erzeugt
+			loggerFile = new LoggerFile(MyLexer.class.getName(),
+					MyLexer.class.getName() + "_ClassLogger.htm", Level.INFO);
+		} else {
+			loggerConsole = new LoggerConsole(MyLexer.class.getName(),
+					Level.OFF);
+			loggerFile = new LoggerFile(MyLexer.class.getName(),
+					MyLexer.class.getName() + "_ClassLogger.htm", Level.OFF);
+		}
+		
 		this._source = new BufferedReader(new FileReader(source));
-
 		foundRegex_List = new ArrayList<Regex>();
-
+		
 		try {
 			readStringfromFile();
 			findRegex();
@@ -100,6 +121,24 @@ public class MyLexer {
 					foundRegex_List.add(regex);
 					sourceString = sourceString.replaceFirst(
 							regex.getRegexAsString(), "");
+					
+					if(regex.getName().equals("MiscText"))
+						temp = temp + regex.getExpression();					
+					
+					if(!regex.getName().equals("MiscText") && !temp.equals(""))
+						{loggerConsole.getLogger().fine(temp);
+						temp = "";}
+					
+					if (!regex.getName().equals("MiscText") && temp.equals(""))
+						loggerConsole.getLogger().fine(regex.getExpression());
+					
+					
+					if (regex.getClass().getName().equals(TCommentMore.class.getName())
+							| regex.getClass().getName().equals(TCommentOne.class.getName()))
+						loggerFile.getLogger().finest(regex.getHTMLTag());
+					else
+						loggerFile.getLogger().fine(regex.getHTMLTag());
+					
 					break;
 				}
 			}

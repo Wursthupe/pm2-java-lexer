@@ -57,7 +57,7 @@ public class GUI{
 	 * Da dieses Musster dem Dekorier-Pattern enspricht und das unterste Muster das ScollPane ist,
 	 * wird dieses als letztes dem mainFrame übergeben.
 	 */
-	public GUI() {
+	public GUI(final boolean logging) {
 		mainFrame = new JFrame("Quelltext mit Syntaxhighlighting");
 		mainFrame.setLayout(new FlowLayout()); // FrameLout setzen
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +84,7 @@ public class GUI{
 			    if(returnVal == JFileChooser.APPROVE_OPTION) {
 			    	File file = chooser.getSelectedFile();
 			    	try {
-						lexer = new MyLexer(file.getAbsolutePath());
+						lexer = new MyLexer(file.getAbsolutePath(), logging);
 					} catch (FileNotFoundException e1) {
 						actionPerformed(e);
 					}
@@ -99,8 +99,8 @@ public class GUI{
 	 * Ruft den parameterlosen Kontruktor auf und setzt Fenstertext
 	 * @param htmlSource
 	 */
-	public GUI(String htmlSource) {
-		this();
+	public GUI(String htmlSource, boolean logging) {
+		this(logging);
 		setWindowText(htmlSource);
 	}
 	
