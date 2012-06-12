@@ -103,4 +103,31 @@ public abstract class Regex {
 
 		return "";
 	}
+	
+	/**
+	 * Überprüft, ob der eigene reguläre Ausruck auf den Anfang der übergebenen
+	 * Zeichenkette passt.
+	 * Ist dies der Fall, wird die gefundene Zeichenkette in diesem Objekt
+	 * mit {@link #setExpression(String)} gespeichert.
+	 * 
+	 * @param expression die zu überprüfende Zeichenkette
+	 * @return true, wenn der reg. Ausdruck auf den Anfang passt, sonst false
+	 */
+	public boolean startsWithRegex(String expression) {
+		int len_exp = expression.length();
+		
+		String temp = expression.replaceFirst(getRegexAsString(), "");
+		int len_temp = temp.length();
+		
+		if (len_exp > len_temp) {
+			String sub = expression.substring(0, len_exp - len_temp);
+			
+			if (expression.startsWith(sub)) {
+				setExpression(sub);
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
